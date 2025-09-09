@@ -91,7 +91,7 @@ Confirmation mock: If event reaches quota and now ≥ T-48h cutoff → show moda
 
 Perk visualization: Badge (“Free dessert / loyalty points”) toggled by DB flag.
 
-About (/about) (optional)
+About (/about) 
 
 Static explainer of the concept; links to contact.
 

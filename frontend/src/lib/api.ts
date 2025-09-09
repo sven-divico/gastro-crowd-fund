@@ -1,9 +1,8 @@
 import axios from 'axios'
-
-const apiBase = import.meta.env.VITE_API_BASE_URL || '/api'
+import { getConfig } from './config'
 
 export const api = axios.create({
-  baseURL: apiBase,
+  baseURL: getConfig().apiBase,
 })
 
 export function setAuthToken(token: string | null) {
@@ -19,4 +18,3 @@ export function setAuthToken(token: string | null) {
 export function getToken(): string | null {
   return localStorage.getItem('demo_token')
 }
-

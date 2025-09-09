@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api, getToken, setAuthToken } from '../lib/api'
+import { RotateCcw } from 'lucide-react'
 
 export default function Admin(){
   const [events, setEvents] = useState<any[]>([])
@@ -17,7 +18,7 @@ export default function Admin(){
     <div>
       <div className="flex justify-between items-center mb-3">
         <h1 className="text-2xl font-semibold">Admin</h1>
-        <button className="btn btn-outline" onClick={reset}>Reset Bookings</button>
+        <button className="btn btn-outline gap-2 transition-transform active:scale-95" onClick={reset}><RotateCcw size={18}/> Reset Bookings</button>
       </div>
       <div className="overflow-x-auto">
         <table className="table">
@@ -32,4 +33,3 @@ export default function Admin(){
     </div>
   )
 }
-

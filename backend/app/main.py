@@ -32,6 +32,14 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
+# Lightweight cache headers for static assets
+@app.middleware("http")
+async def static_cache_headers(request, call_next):
+    response = await call_next(request)
+    if request.url.path.startswith("/static/"):
+        response.headers.setdefault("Cache-Control", "public, max-age=86400")
+    return response
+
 
 @app.on_event("startup")
 def on_startup():

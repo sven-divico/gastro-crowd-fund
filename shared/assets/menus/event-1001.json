@@ -3,6 +3,7 @@
     {
       "id": "A",
       "name": "Alpe-Adria",
+      "description": "Für Liebhaber der alpenländischen Küche",
       "price": 45,
       "currency": "EUR",
       "courses": [
@@ -14,6 +15,7 @@
     {
       "id": "B",
       "name": "Mediterran",
+      "description": "Ein Hauch von Italien und Spanien",
       "price": 49,
       "currency": "EUR",
       "courses": [

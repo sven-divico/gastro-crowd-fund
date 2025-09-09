@@ -1,0 +1,27 @@
+{
+  "menus": [
+    {
+      "id": "A",
+      "name": "Alpe-Adria",
+      "price": 45,
+      "currency": "EUR",
+      "courses": [
+        { "type": "starter", "name": "Kärntner Kasnudeln" },
+        { "type": "main", "name": "Gefüllte Paprika" },
+        { "type": "dessert", "name": "Apfelstrudel" }
+      ]
+    },
+    {
+      "id": "B",
+      "name": "Mediterran",
+      "price": 49,
+      "currency": "EUR",
+      "courses": [
+        { "type": "starter", "name": "Bruschetta" },
+        { "type": "main", "name": "Seafood Risotto" },
+        { "type": "dessert", "name": "Tiramisu" }
+      ]
+    }
+  ]
+}
+

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from typing import Any
 
 from ..db import get_session
@@ -14,11 +14,47 @@ router = APIRouter(prefix="/events", tags=["events"], dependencies=[Depends(requ
 
 
 @router.get("")
-def list_events(from_: str | None = None, to: str | None = None, session: Session = Depends(get_session)):
+def list_events(from_: str | None = None, to: str | None = None, next: str | None = None, session: Session = Depends(get_session)):
     now = datetime.utcnow()
-    events = session.exec(select(Event)).all()
+    # Parse filters
+    start: datetime | None = None
+    end: datetime | None = None
+    if next:
+        # support formats like '7d' or '3d'
+        try:
+            if next.endswith('d'):
+                days = int(next[:-1])
+                start = now
+                end = now + timedelta(days=days)
+        except Exception:
+            pass
+    if from_:
+        try:
+            start = datetime.fromisoformat(from_.replace('Z','+00:00'))
+        except Exception:
+            start = start or now
+    if to:
+        try:
+            end = datetime.fromisoformat(to.replace('Z','+00:00'))
+        except Exception:
+            end = end or (now + timedelta(days=7))
+
+    # Normalize to naive UTC for comparison to DB values (which are naive UTC)
+    if start and start.tzinfo is not None:
+        start = start.astimezone(timezone.utc).replace(tzinfo=None)
+    if end and end.tzinfo is not None:
+        end = end.astimezone(timezone.utc).replace(tzinfo=None)
+
+    stmt = select(Event)
+    events = session.exec(stmt).all()
     items: list[dict[str, Any]] = []
     for ev in events:
+        # Apply filtering by start_at if provided
+        if start or end:
+            if start and ev.start_at < start:
+                continue
+            if end and ev.start_at > end:
+                continue
         data = ev.model_dump()
         data.update(computed_fields(ev, now))
         items.append(data)
