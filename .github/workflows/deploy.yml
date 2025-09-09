@@ -1,0 +1,40 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script_stop: true
+          script: |
+            set -euo pipefail
+            APP_DIR=${APP_DIR:-/opt/gastro-crowd-fund}
+            if [ ! -d "$APP_DIR/.git" ]; then
+              sudo mkdir -p "$APP_DIR"
+              sudo chown -R "$USER":"$USER" "$APP_DIR"
+              git clone git@github.com:sven-divico/gastro-crowd-fund.git "$APP_DIR"
+            fi
+            cd "$APP_DIR"
+            git remote set-url origin git@github.com:sven-divico/gastro-crowd-fund.git
+            git fetch --all --prune
+            git reset --hard origin/main
+            # Ensure shared data dirs exist (db, assets, content)
+            mkdir -p shared/assets/media shared/assets/menus shared/assets/content shared/db
+            # Build and (re)start containers
+            docker compose build --pull
+            docker compose up -d
+            docker image prune -f
