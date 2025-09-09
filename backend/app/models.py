@@ -1,7 +1,17 @@
 from __future__ import annotations
 from datetime import datetime, timedelta
-from typing import Optional, Literal, Any
+from typing import Optional, Any
+from enum import Enum
 from sqlmodel import SQLModel, Field
+from sqlalchemy import Column
+from sqlalchemy.types import JSON
+from sqlalchemy import Enum as SAEnum
+
+
+class EventStatus(str, Enum):
+    PLANNED = "PLANNED"
+    CONFIRMED = "CONFIRMED"
+    CANCELLED = "CANCELLED"
 
 
 class Event(SQLModel, table=True):
@@ -12,10 +22,10 @@ class Event(SQLModel, table=True):
     cutoff_at: datetime
     total_seats: int
     booked_seats: int = 0
-    menus: dict | None = None  # holds reference info, e.g., {"menu_url": "/assets/menus/1001"}
-    perks: dict | None = None
-    status: Literal["PLANNED", "CONFIRMED", "CANCELLED"] = "PLANNED"
-    hero_media: dict | None = None  # {"image": "hero-velden-01.jpg", "video": "hero.mp4", "autoplay": false, "muted": true, "loop": true}
+    menus: dict | None = Field(default=None, sa_column=Column(JSON))  # holds reference info, e.g., {"menu_url": "/assets/menus/1001"}
+    perks: dict | None = Field(default=None, sa_column=Column(JSON))
+    status: EventStatus = Field(default=EventStatus.PLANNED, sa_column=Column(SAEnum(EventStatus)))
+    hero_media: dict | None = Field(default=None, sa_column=Column(JSON))  # {"image": "hero-velden-01.jpg", "video": "hero.mp4", "autoplay": false, "muted": true, "loop": true}
     location: str = ""
 
 
@@ -92,4 +102,3 @@ def seed_events() -> list[Event]:
             )
         )
     return events
-

@@ -4,6 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import ORJSONResponse
 from fastapi import APIRouter
 from .config import settings
+import os
 from .db import init_db, get_session
 from .seed import ensure_seed
 from .routes import events as events_routes
@@ -40,6 +41,8 @@ def on_startup():
         ensure_seed(session)
 
 
+# Ensure assets dir exists before mounting static
+os.makedirs(settings.assets_dir, exist_ok=True)
 # Static assets from mounted folder
 app.mount("/static", StaticFiles(directory=settings.assets_dir), name="static")
 
