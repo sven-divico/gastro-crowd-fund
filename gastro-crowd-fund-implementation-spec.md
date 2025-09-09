@@ -1,3 +1,28 @@
+# clarifications
+Auth token: static token from .env is fine.
+Storage: stick with localStorage as specified
+Timezones: UTC with frontend-localized display
+Quota edge cases: Should POST /events/{id}/book clamp and return 200 with clamped value
+Status derivation: Should status be computed server-side from rules on each fetch
+Menus: keep /assets/menus/{eventId} separate
+Frontend runtime config: small runtime config JSON served by backend 
+Admin/Debug: Gate /admin with same token
+NPM domains: Final hostnames to bake into CORS and ENV. use frontend.demo.divico-gmbh.de and api.demo.divico-gmbh.de.
+Media handling: Serve assets/media/* via backend static mount with cache headers No video autoplay/muted/loop defaults to enforce
+Seed data: 7 event IDs (1001, 1002, 1003, ...) and some initial booked_seats for each demos, plus initial cutoff_at relative to now.
+Reset endpoint: Add /admin/reset to restore seed state between demos
+Accessibility: language/locale is de-AT, currency is € e.g. "1.123,50 €"?
+
+CORS: Single allowed origin from .env with fallback to http://localhost:8080 in dev.
+Static assets: Served by backend at /static/* from mounted /data/assets.
+
+Menus: Keep separate endpoint; frontend fetches from /assets/menus/{eventId}. GET /events/{id} will include a menu_url pointer, not inline menus.
+
+Media autoplay: Default to autoplay; provide a flag so we can toggle to autoplay/muted/loop per asset if desired.
+
+Locale/currency: Use de-AT with Intl.NumberFormat for euros (e.g., “1.123,50 €”)
+
+
 # 1) Architecture Overview
 
 Goal: Mobile-first, multi-page demonstrator that showcases the guest journey and quota-to-confirmation mechanics. Single shared demo password; no PII; no payments. Easily tweakable via SQLite and mounted files. Deployable with one Docker Compose stack incl. reverse proxy + TLS.

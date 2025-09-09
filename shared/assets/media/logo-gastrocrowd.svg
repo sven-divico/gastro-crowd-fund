@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="576" viewBox="0 0 1024 576">
+  <defs>
+    <!-- Pastel palette -->
+    <linearGradient id="gradTable" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EAE7FF" />
+      <stop offset="100%" stop-color="#D7F0F7" />
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="10" flood-color="#B2B2B2" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1024" height="576" fill="#FFFFFF" />
+
+  <!-- Center group -->
+  <g transform="translate(512,288)">
+    <!-- Progress ring -->
+    <circle r="160" fill="none" stroke="#FDE2E4" stroke-width="22" opacity="1"/>
+    <path d="
+      M 160 0
+      A 160 160 0 1 1 -100 -126
+    " fill="none" stroke="#B8E3C0" stroke-width="22" stroke-linecap="round"/>
+
+    <!-- Table -->
+    <circle r="120" fill="url(#gradTable)" filter="url(#softShadow)"/>
+
+    <!-- Check mark -->
+    <path d="M -35 0 L -10 25 L 40 -35" fill="none" stroke="#7CC5A7" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+
+    <!-- Guest nodes -->
+    <circle cx="-175" cy="-30" r="16" fill="#FFD6A5"/>
+    <circle cx="175" cy="10" r="16" fill="#BDE0FE"/>
+    <circle cx="0" cy="-185" r="16" fill="#FFADAD"/>
+
+    <!-- Reservation dots -->
+    <g fill="#CDE6F5">
+      <circle cx="120" cy="-110" r="6"/>
+      <circle cx="60" cy="-150" r="6"/>
+      <circle cx="0" cy="-160" r="6"/>
+      <circle cx="-60" cy="-150" r="6"/>
+      <circle cx="-110" cy="-115" r="6"/>
+      <circle cx="-150" cy="-60" r="6"/>
+      <circle cx="-160" cy="0" r="6" fill="#B8E3C0"/>
+      <circle cx="-150" cy="60" r="6" fill="#B8E3C0"/>
+      <circle cx="-120" cy="110" r="6" fill="#B8E3C0"/>
+      <circle cx="-60" cy="150" r="6"/>
+      <circle cx="0" cy="160" r="6"/>
+      <circle cx="60" cy="150" r="6"/>
+      <circle cx="110" cy="115" r="6"/>
+      <circle cx="150" cy="60" r="6"/>
+    </g>
+  </g>
+</svg>
