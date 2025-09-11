@@ -11,9 +11,10 @@ Prerequisites
 
 1) Create a Deploy Key on the server (GitHub read-only)
 ```
-ssh <user>@<server>
+ssh root@178.156.185.16
 mkdir -p ~/.ssh && chmod 700 ~/.ssh
 ssh-keygen -t ed25519 -C "deploy@gastro-crowd-fund" -f ~/.ssh/id_ed25519_gcf_deploy
+
 # Print the public key; copy it
 cat ~/.ssh/id_ed25519_gcf_deploy.pub
 ```
@@ -43,13 +44,14 @@ You should see a success message.
 sudo mkdir -p /opt/gastro-crowd-fund
 sudo chown -R $USER:$USER /opt/gastro-crowd-fund
 cd /opt/gastro-crowd-fund
+
 # First-time clone
 git clone git@github.com:sven-divico/gastro-crowd-fund.git .
 # Create .env with your server values
 cp .env.example .env
 # Edit .env:
-# DEMO_PASSWORD=...
-# DEMO_TOKEN=...
+# DEMO_PASSWORD="eat_good#"
+# DEMO_TOKEN=a_nice_token_for_a_demo
 # API_PORT=8000
 # FRONTEND_PORT=8080
 # PUBLIC_BASE_URL=https://api.demo.divico-gmbh.de
@@ -100,4 +102,3 @@ Troubleshooting
 - SSH auth errors from Actions: verify SSH_KEY secret and the server authorized_keys.
 - GitHub access from server: confirm Deploy Key is added and `ssh -T git@github.com` succeeds.
 - Compose not found: install docker compose plugin or use `docker-compose` in the workflow and on server.
-
